@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/gestures.dart';
 import 'package:get/get.dart';
 import 'package:chatgptbing/api.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +42,7 @@ class MyHomePage extends StatefulWidget {
 Future<Album>? _futureAlbum;
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool isPressed=false;
  
   int _counter = 0;
   TextEditingController controller = TextEditingController();
@@ -54,6 +56,12 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     viewController ctrl = Get.put(viewController());
      double size=MediaQuery.of(context).size.height - 150;
+      ScrollController scrollController =  ScrollController(
+    initialScrollOffset: 0.0,
+    keepScrollOffset: true,
+  );
+    
+     
 
     return Scaffold(
         appBar: AppBar(
@@ -62,12 +70,15 @@ class _MyHomePageState extends State<MyHomePage> {
           // the App.build method, and use it to set our appbar title.
           title: Text(' Chat'),
         ),
+        
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              //height: size,
+            SizedBox(
+              height: isPressed? size-370:size,
               child: SingleChildScrollView(
+                controller: scrollController,
+                //dragStartBehavior: DragStartBehavior.,
                 child: Obx(
                   () => Column(
                     children: [
@@ -92,6 +103,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Padding(
                       padding: const EdgeInsets.only(left: 10, bottom: 5),
                       child: TextField(
+                        onTap: () {
+                          setState(() {
+                            isPressed=true;
+                            print(isPressed);
+                          });
+                          
+                        },
                         controller: controller,
                         
                         decoration: const InputDecoration(
@@ -122,6 +140,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       ctrl.chats.add(getResult());
                       Future.delayed(Duration(milliseconds: 100), () {
                          controller.clear();
+                      });
+                      setState(() {
+                          FocusScopeNode currentfocus = FocusScope.of(context); //get the currnet focus node
+if (!currentfocus.hasPrimaryFocus) { //prevent Flutter from throwing an exception
+    currentfocus.unfocus(); //unfocust from current focust, so that keyboard will dismiss
+}
+Future.delayed(Duration(milliseconds: 1000), () {
+  setState(() {
+                            isPressed=false;
+
+  });
+                      });
+                      
+
                       });
                      
 
