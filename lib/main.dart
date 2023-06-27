@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              height: size,
+              //height: size,
               child: SingleChildScrollView(
                 child: Obx(
                   () => Column(
@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10, left: 20),
                   child: Container(
-                    width: MediaQuery.of(context).size.width - 70,
+                   width: MediaQuery.of(context).size.width - 70,
                     height: 50,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
